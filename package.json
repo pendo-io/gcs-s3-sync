@@ -1,0 +1,27 @@
+{
+  "name": "gcs2s3",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=4.3.2"
+  },
+  "scripts": {
+    "pretest": "npm run lint"
+  },
+  "dependencies": {
+    "google-cloud": "0.56.0",
+    "aws-sdk": "2.100.0",
+    "cloud-functions-runtime-config": "0.2.0"
+  },
+  "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "1.4.16",
+    "ava": "0.21.0",
+    "proxyquire": "1.8.0",
+    "sinon": "3.0.0"
+  },
+  "cloud-repo-tools": {
+    "requiresKeyFile": true,
+    "requiresProjectId": true
+  }
+}
