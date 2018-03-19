@@ -10,9 +10,10 @@
     "pretest": "npm run lint"
   },
   "dependencies": {
-    "google-cloud": "0.56.0",
+    "google-cloud": "0.57.0",
     "aws-sdk": "2.100.0",
-    "cloud-functions-runtime-config": "0.2.0"
+    "cloud-functions-runtime-config": "0.4.0",
+    "googleapis": "27.0.0"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "1.4.16",
