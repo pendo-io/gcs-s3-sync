@@ -9,8 +9,8 @@ https://cloud.google.com/deployment-manager/runtime-configurator/create-and-dele
 ```
 # Name of your GCP project
 PROJECT=my-gcp-project
-# Name for the runtime config
-CONFIG_NAME=my-sync-config 
+# Name for the runtime config (this MUST match the bucket name)
+CONFIG_NAME=my-source-bucket
 # AWS region in which your S3 bucket was created
 S3_REGION=us-east-1
 # Name of the S3 bucket
