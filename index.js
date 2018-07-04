@@ -20,7 +20,7 @@ exports.syncGCS = function (event, callback) {
     // on create value is 1
     console.log(`File ${file.name} uploaded.`);
 
-    const configName = event.data.bucket;
+    const configName = 'gcs-s3-config';
 
     // Fetch "environment" from Google Runtime Configuration
     const awsBucketP = runtimeConfig.getVariable(configName, 'aws-bucket');
@@ -31,7 +31,7 @@ exports.syncGCS = function (event, callback) {
     Promise.all([ awsBucketP, awsAccessKeyP, awsSecretKeyP, regionP ]).then(values => {
         AWS.config.credentials = new AWS.Credentials(values[1], values[2]);
         var s3 = new AWS.S3({region: values[3] });
-        console.log(`Access key ${process.env.AWS_ACCESS_KEY_ID} ; target bucket ${values[0]}`);
+        console.log(`Access key ${values[1]} ; target bucket ${values[0]}`);
 
         var bucket = gcloud.storage().bucket(event.data.bucket);
         var remoteReadStream = bucket.file(file.name).createReadStream();
@@ -45,4 +45,3 @@ exports.syncGCS = function (event, callback) {
   }
   callback();
 };
-

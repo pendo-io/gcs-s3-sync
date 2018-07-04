@@ -10,9 +10,13 @@ https://cloud.google.com/deployment-manager/runtime-configurator/create-and-dele
 # Name of your GCP project
 PROJECT=my-gcp-project
 # Name for the runtime config
-CONFIG_NAME=my-sync-config 
+CONFIG_NAME=my-sync-config
 # AWS region in which your S3 bucket was created
 S3_REGION=us-east-1
+# AWS access key id
+AWS_ACCESS_KEY_ID=your-aws-access-key-id
+# AWS access key secret
+AWS_SECRET_ACCESS_KEY=your-aws-access-key-secret
 # Name of the S3 bucket
 S3_TARGET_BUCKET=my-target-bucket
 # Name for your Cloud Function
@@ -40,4 +44,3 @@ gcloud --project $PROJECT beta functions deploy $CLOUD_FUNCTION_NAME  --stage-bu
 Logs for the function are available in stackdriver at https://console.cloud.google.com/logs/viewer?project=${PROJECT}&resource=cloud_function%2Ffunction_name%2F${CLOUD_FUNCTION_NAME}
 
 Simply substitute the appropriate values for ${PROJECT} and ${CLOUD_FUNCTION_NAME} in the URL
-
