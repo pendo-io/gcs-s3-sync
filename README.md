@@ -32,7 +32,11 @@ gcloud --project $PROJECT beta runtime-config configs variables set aws-bucket $
 ```
 * Finally, deploy the Cloud Function
 ```
-gcloud --project $PROJECT beta functions deploy $CLOUD_FUNCTION_NAME  --stage-bucket $GCS_STAGING_BUCKET --trigger-bucket $GCS_SOURCE_BUCKET --entry-point syncGCS
+gcloud --project $PROJECT beta functions deploy $CLOUD_FUNCTION_NAME --stage-bucket $GCS_STAGING_BUCKET \
+--trigger-event providers/cloud.storage/eventTypes/object.change \
+--trigger-resource $GCS_SOURCE_BUCKET \
+--entry-point syncGCS --runtime nodejs10 \
+--set-env-vars GCLOUD_PROJECT=$PROJECT
 ```
 
 ## Troubleshooting

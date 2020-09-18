@@ -6,12 +6,14 @@
  */
 
 'use strict';
-const AWS = require('aws-sdk');
-const gcloud = require('google-cloud');
-const runtimeConfig = require('cloud-functions-runtime-config');
+const S3 = require('aws-sdk/clients/s3');
+const {Storage} = require('@google-cloud/storage');
+const storage = new Storage();
+// const runtimeConfig = require('cloud-functions-runtime-config');
+const runtimeConfig = require('./runtime-config');
 
-exports.syncGCS = function (event, callback) {
-  const file = event.data;
+exports.syncGCS = function (data, context, callback) {
+  const file = data;
 
   if (file.resourceState === 'not_exists') {
     console.log(`File ${file.name} deleted.`);
@@ -20,7 +22,7 @@ exports.syncGCS = function (event, callback) {
     // on create value is 1
     console.log(`File ${file.name} uploaded.`);
 
-    const configName = event.data.bucket;
+    const configName = data.bucket;
 
     // Fetch "environment" from Google Runtime Configuration
     const awsBucketP = runtimeConfig.getVariable(configName, 'aws-bucket');
@@ -29,13 +31,10 @@ exports.syncGCS = function (event, callback) {
     const regionP = runtimeConfig.getVariable(configName, 'aws-region');
 
     Promise.all([ awsBucketP, awsAccessKeyP, awsSecretKeyP, regionP ]).then(values => {
-        AWS.config.credentials = new AWS.Credentials(values[1], values[2]);
-        var s3 = new AWS.S3({region: values[3] });
-        console.log(`Access key ${value[1]} ; target bucket ${values[0]}`);
-
-        var bucket = gcloud.storage().bucket(event.data.bucket);
+        console.log(`Access key ${values[1]} ; target bucket ${values[0]}`);
+        var bucket = storage.bucket(data.bucket);
         var remoteReadStream = bucket.file(file.name).createReadStream();
-        var s3obj = new AWS.S3({params: {Bucket: values[0], Key: file.name}});
+        var s3obj = new S3({params: {Bucket: values[0], Key: file.name}, credentials: { accessKeyId: values[1], secretAccessKey: values[2] }});
         s3obj.upload({Body: remoteReadStream})
           .on('httpUploadProgress', function(evt) { console.log(evt); })
           .send(function(err, data) { console.log(err, data) });
